@@ -17,20 +17,24 @@
 ### El cambio en un gráfico
 
 ```
-Rol del desarrollador              vs.        Rol del desarrollador
+¿En qué invierte su tiempo          vs.       ¿En qué invierte su tiempo
+el desarrollador?                              el desarrollador?
 (modelo tradicional)                           (realidad 2026)
 
 ┌─────────────────────────┐    ┌─────────────────────────┐
 │                         │    │                         │
-│  ████████████████ 80%   │    │  ██████ 15%             │  Escribir código
+│  ████████████████ 80%   │    │  ██ 10%                 │  Escribir código
 │                         │    │                         │
-│  ██ 5%                  │    │  █████████████████ 85%  │  Supervisar y evaluar
+│  █ 5%                   │    │  ██████ 30%             │  Supervisar y evaluar
 │                         │    │                         │
-│  ██ 5%                  │    │  ████████████████ 70%   │  Especificar y diseñar
+│  █ 5%                   │    │  █████ 25%              │  Especificar y diseñar
 │                         │    │                         │
-│  ██ 5%                  │    │  ████████████████ 75%   │  Testear y validar
+│  █ 5%                   │    │  ████ 20%               │  Testear y validar
 │                         │    │                         │
-│  █ 3%                   │    │  ███████████████ 65%    │  Orquestar agentes
+│                    0%   │    │  ███ 15%                │  Orquestar agentes
+│                         │    │                         │
+│  █ 5%                   │    │                         │
+│  (reuniones, otros)     │    │                         │
 │                         │    │                         │
 └─────────────────────────┘    └─────────────────────────┘
 ```
