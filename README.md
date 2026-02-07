@@ -23,7 +23,7 @@ el desarrollador?                              el desarrollador?
 
 ┌─────────────────────────┐    ┌─────────────────────────┐
 │                         │    │                         │
-│  ████████████████ 80%   │    │  ██ 10%                 │  Escribir código
+│  ████████████████ 80%   │    │  █ 5%                   │  Escribir código
 │                         │    │                         │
 │  █ 5%                   │    │  ██████ 30%             │  Supervisar y evaluar
 │                         │    │                         │
@@ -33,8 +33,7 @@ el desarrollador?                              el desarrollador?
 │                         │    │                         │
 │                    0%   │    │  ███ 15%                │  Orquestar agentes
 │                         │    │                         │
-│  █ 5%                   │    │                         │
-│  (reuniones, otros)     │    │                         │
+│  █ 5%                   │    │  █ 5%                   │  Reuniones y otros
 │                         │    │                         │
 └─────────────────────────┘    └─────────────────────────┘
 ```
