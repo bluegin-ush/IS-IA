@@ -71,7 +71,14 @@ proyecto extiende esa investigación a **todas las etapas**.
 📄 is-ia.md
 │
 ├── 1. Introducción ─────────────── El punto de inflexión
-├── 2. La nueva realidad ────────── Del asistente al implementador (con datos)
+├── 2. Revisión sistemática ─────── SLR formal (Kitchenham) con 77 fuentes
+│   ├── Protocolo: 5 RQs, PRISMA, quality assessment
+│   ├── Hallazgos por etapa del SDLC (RQ1)
+│   ├── Calidad y seguridad (RQ2)
+│   ├── Productividad: percepción vs. realidad (RQ3)
+│   ├── Transformación del rol profesional (RQ4)
+│   ├── Marcos metodológicos emergentes (RQ5)
+│   └── Datos de adopción en la industria
 ├── 3. Estudio de factibilidad ──── Viabilidad, estimación y riesgos con IA
 ├── 4. Requerimientos ───────────── Elicitación, análisis y especificación
 │   └── Basado en el paper del XXX CACIC (2024)
@@ -82,29 +89,29 @@ proyecto extiende esa investigación a **todas las etapas**.
 ├── 9. Evolución y mantenimiento ── Deuda técnica, refactoring, modernización
 ├── 10. El nuevo profesional ────── Roles, habilidades, formación
 ├── 11. Conclusiones ────────────── Hacia dónde vamos
-└── 12. Referencias ─────────────── Papers, surveys, datos de industria
+└── 12. Referencias ─────────────── 77 fuentes verificadas (formato IEEE)
 ```
 
 ### Estado
 
 ```
-[██░░░░░░░░░░░░░░░░░░] 10% — Estructura inicial
+[████████████░░░░░░░░] 60% — SLR completa, secciones en desarrollo
 ```
 
 | Sección | Estado |
 |---|---|
-| 1. Introducción | En progreso |
-| 2. La nueva realidad | Pendiente |
-| 3. Estudio de factibilidad | Pendiente |
-| 4. Requerimientos | Pendiente |
-| 5. Diseño | Pendiente |
-| 6. Implementación | Pendiente |
-| 7. Testing | Pendiente |
-| 8. Despliegue y operaciones | Pendiente |
-| 9. Evolución y mantenimiento | Pendiente |
-| 10. El nuevo profesional | Pendiente |
-| 11. Conclusiones | Pendiente |
-| 12. Referencias | Pendiente |
+| 1. Introducción | Completa |
+| 2. Revisión sistemática de la literatura | Completa |
+| 3. Estudio de factibilidad | En progreso |
+| 4. Requerimientos | En progreso |
+| 5. Diseño | En progreso |
+| 6. Implementación | En progreso |
+| 7. Testing | En progreso |
+| 8. Despliegue y operaciones | En progreso |
+| 9. Evolución y mantenimiento | En progreso |
+| 10. El nuevo profesional | En progreso |
+| 11. Conclusiones | En progreso |
+| 12. Referencias | Completa (77 fuentes) |
 
 ---
 

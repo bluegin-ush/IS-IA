@@ -8,7 +8,7 @@ cuando la inteligencia artificial participa activamente en cada etapa del desarr
 ## Tabla de contenidos
 
 1. [Introducción: el punto de inflexión](#1-introducción-el-punto-de-inflexión)
-2. [La nueva realidad del desarrollo de software](#2-la-nueva-realidad-del-desarrollo-de-software)
+2. [Revisión sistemática de la literatura](#2-revisión-sistemática-de-la-literatura)
 3. [Estudio de factibilidad](#3-estudio-de-factibilidad)
 4. [Requerimientos: elicitación, análisis y especificación](#4-requerimientos-elicitación-análisis-y-especificación)
 5. [Diseño](#5-diseño)
@@ -134,160 +134,825 @@ evidencia académica y datos de la industria, pero el objetivo final es que un
 equipo de desarrollo pueda tomar estas prácticas y aplicarlas en su trabajo
 diario.
 
+La sección 2 presenta una **revisión sistemática de la literatura** siguiendo
+la metodología de Kitchenham [3], que constituye la base empírica sobre la
+cual se construyen las recomendaciones prácticas de las secciones 3-10.
+
 ---
 
-## 2. La nueva realidad del desarrollo de software
+## 2. Revisión sistemática de la literatura
 
 > [!IMPORTANT]
-> *En 2025, la pregunta dejó de ser "¿debería usar IA para programar?" y pasó a ser "¿cómo integro la IA en cada etapa sin perder el control?"*
+> *Esta revisión sigue la metodología de Kitchenham para revisiones sistemáticas en ingeniería de software [3], organizada en tres fases: planificación, conducción y documentación.*
 
-### 2.1. Los números que cambiaron todo
+### 2.1. Motivación y necesidad de la revisión
 
-La adopción de herramientas de IA en el desarrollo de software dejó de ser una
-tendencia para convertirse en el estándar de la industria. Los datos más
-recientes muestran una transformación que ya es irreversible:
+La aplicación de IA generativa al desarrollo de software es un campo que
+evoluciona con velocidad sin precedentes. Entre 2022 y 2026, la investigación
+ha crecido de manera explosiva — solo en testing con LLMs, la producción
+académica pasó de 1 paper en 2021 a 73 en 2024 [4]. Esta velocidad genera
+un problema: la evidencia está fragmentada, a veces contradictoria, y
+frecuentemente mezclada con afirmaciones de marketing sin respaldo empírico.
 
-- **El 84% de los desarrolladores** ya utiliza herramientas de IA en su
-  trabajo diario (GitHub, 2024) [3].
-- **El 41% del código** en GitHub es generado por IA (GitHub Copilot
-  Report, 2025) [4].
-- **El 76% de los problemas** de repositorios reales pueden ser resueltos
-  por agentes autónomos como SWE-Agent (Princeton, 2024) [5].
-- **El 97% de los desarrolladores** ha usado herramientas de IA al menos
-  una vez (Stack Overflow Developer Survey, 2024) [6].
-- **55% de aumento en productividad** reportado por desarrolladores que usan
-  GitHub Copilot para tareas de codificación (GitHub, 2022) [7].
+Una revisión sistemática de la literatura (SLR) permite:
+- Identificar, evaluar y sintetizar la evidencia disponible de manera
+  rigurosa y reproducible.
+- Distinguir hallazgos con respaldo empírico sólido de afirmaciones
+  anecdóticas o promocionales.
+- Detectar contradicciones y brechas en el conocimiento actual.
+- Proveer una base fundamentada para las recomendaciones prácticas que
+  constituyen el cuerpo principal de este documento.
 
-Pero los números también cuentan una historia más compleja. Un estudio
-controlado y aleatorizado de METR (2025) reveló una paradoja inquietante:
-cuando 16 desarrolladores experimentados trabajaron en sus propios
-repositorios open-source, el uso de herramientas de IA **incrementó** el
-tiempo de completamiento en un 19% — a pesar de que los desarrolladores
-**percibían** un ahorro del 20-24% [14]. La productividad percibida y la
-productividad real pueden divergir significativamente.
+### 2.2. Protocolo de revisión
 
-No son solo números de adopción — son números de **transformación
-estructural**. Cuando casi la mitad del código es generado por máquinas y
-prácticamente todos los desarrolladores usan herramientas de IA, las
-prácticas de ingeniería de software diseñadas para un mundo donde los humanos
-escriben todo el código necesitan ser repensadas. Pero repensadas con rigor,
-no con entusiasmo ciego.
+#### 2.2.1. Preguntas de investigación
 
-### 2.2. La evolución: de autocompletar a orquestar
+Se definieron cinco preguntas de investigación (RQs) que cubren las
+dimensiones fundamentales del impacto de la IA en el desarrollo de software:
 
-La integración de la IA en el desarrollo de software no ocurrió de golpe.
-Siguió una progresión que permite entender hacia dónde vamos:
+| RQ | Pregunta | Dimensión |
+|----|----------|-----------|
+| **RQ1** | ¿Cuál es el estado actual de la aplicación de IA generativa (LLMs y agentes) en cada etapa del SDLC (2022-2026)? ¿Qué capacidades han sido demostradas empíricamente y qué limitaciones persisten? | Estado del arte por fase |
+| **RQ2** | ¿Cuál es el impacto medible de la IA en la calidad, seguridad y mantenibilidad del software producido? | Calidad y seguridad |
+| **RQ3** | ¿Cuál es el efecto real de las herramientas de IA en la productividad de los desarrolladores, y en qué medida coincide la productividad percibida con la medida? | Productividad |
+| **RQ4** | ¿Cómo se está transformando el rol del profesional de software y qué competencias emergentes son requeridas? | Rol profesional |
+| **RQ5** | ¿Qué marcos metodológicos y prácticas han surgido para integrar la IA de manera sistemática en el SDLC, preservando calidad, seguridad y control? | Frameworks y metodologías |
 
-**Generación 1 — Autocompletado inteligente (2018-2020)**
+#### 2.2.2. Estrategia de búsqueda
 
-Herramientas como Tabnine y los primeros modelos de completado predecían la
-siguiente línea de código. El desarrollador seguía escribiendo; la IA solo
-sugería. El impacto en la productividad era modesto pero medible [7].
+**Bases de datos académicas:** IEEE Xplore, ACM Digital Library, Springer
+Link, ScienceDirect, Wiley, arXiv, MDPI, Frontiers, Google Scholar.
 
-**Generación 2 — Generación de funciones (2021-2022)**
+**Fuentes de industria (grey literature):** Gartner, Forrester, Stack
+Overflow Survey, JetBrains Developer Ecosystem, GitHub Octoverse/Research,
+Microsoft Research.
 
-GitHub Copilot marcó un antes y un después. A partir de un comentario o una
-firma de función, el modelo generaba implementaciones completas. El
-desarrollador pasó de escribir a **revisar y aceptar**. La adopción fue
-explosiva: un millón de usuarios en los primeros meses [3].
+**Período:** enero 2022 — febrero 2026.
 
-**Generación 3 — Conversación y contexto (2022-2023)**
+**Idiomas:** inglés y español.
 
-ChatGPT y los chatbots especializados permitieron mantener conversaciones
-sobre código — explicar errores, refactorizar, diseñar arquitecturas a través
-del diálogo. El código dejó de ser el único artefacto; el **proceso de
-razonamiento** se volvió visible y compartible.
+**Strings de búsqueda:** combinaciones de ("LLM" OR "generative AI" OR "AI
+agent" OR "AI coding assistant") AND ("software development" OR "SDLC" OR
+"software engineering"), con refinamientos específicos por fase del SDLC.
 
-**Generación 4 — Agentes autónomos (2024-2025)**
+**Snowballing:** forward y backward desde papers clave: Jimenez et al./
+SWE-bench [5], Peng et al./Copilot [6], METR [7], Liu et al./agents survey
+[8], Wang et al./testing survey [4].
 
-SWE-Agent, Devin, Claude Code, Cursor Agent Mode. La IA ya no espera
-instrucciones línea por línea — recibe un objetivo, planifica una estrategia,
-ejecuta múltiples acciones (leer código, modificar archivos, ejecutar tests,
-corregir errores) y reporta resultados. El desarrollador pasó de escribir
-código a **supervisar y validar** el trabajo de un agente [5].
+#### 2.2.3. Criterios de inclusión y exclusión
 
-**Generación 5 — IA en todo el SDLC (2025-2026)**
+**Criterios de inclusión:**
+- IC1: Estudios que evalúan empíricamente o revisan sistemáticamente IA/LLMs
+  en al menos una fase del SDLC.
+- IC2: Publicados entre enero 2022 y febrero 2026.
+- IC3: Publicados en venues peer-reviewed o arXiv con citas subsecuentes.
+- IC4: Reportes de industria de organizaciones reconocidas con metodología
+  documentada.
+- IC5: Proveen datos cuantitativos o análisis cualitativo sistemático.
+- IC6: Escritos en inglés o español.
 
-La frontera actual. La IA no solo genera código — participa en la
-elicitación de requerimientos [2], propone arquitecturas, genera tests,
-configura despliegues y monitorea producción. El profesional del software se
-convierte en **orquestador, evaluador y responsable último** de un proceso
-donde la IA interviene en cada paso.
+**Criterios de exclusión:**
+- EC1: IA/ML general sin aplicación específica a procesos de desarrollo.
+- EC2: Piezas de opinión o blogs sin respaldo empírico (excepción: frameworks
+  con adopción significativa, clasificados como grey literature).
+- EC3: Enfocados exclusivamente en entrenamiento/arquitectura de modelos sin
+  aplicación a ingeniería de software.
+- EC4: Estudios duplicados o supersedidos por publicaciones posteriores de los
+  mismos autores.
+- EC5: Preprints arXiv >6 meses con <5 citas y sin validación empírica.
+
+#### 2.2.4. Evaluación de calidad
+
+**Para estudios académicos** (score 0/0.5/1 por criterio, máximo 7):
+
+| # | Criterio |
+|---|----------|
+| QA1 | ¿Los objetivos de investigación están claramente definidos? |
+| QA2 | ¿El diseño del estudio es apropiado para las preguntas de investigación? |
+| QA3 | ¿El método de recolección de datos está adecuadamente descrito? |
+| QA4 | ¿El tamaño de muestra/dataset es adecuado? |
+| QA5 | ¿Se discuten amenazas a la validez? |
+| QA6 | ¿Los hallazgos están soportados por los datos presentados? |
+| QA7 | ¿El estudio es reproducible con la información provista? |
+
+**Para reportes de industria** (score 0/0.5/1, máximo 4):
+
+| # | Criterio |
+|---|----------|
+| QI1 | ¿La metodología está claramente descrita? |
+| QI2 | ¿El tamaño de muestra/cobertura es adecuado? |
+| QI3 | ¿La organización/publisher es reconocida en el campo? |
+| QI4 | ¿Los hallazgos son consistentes con otras fuentes independientes? |
+
+**Umbral:** estudios académicos con score <3/7 o reportes de industria <2/4
+se excluyen o se reportan con caveats explícitos.
+
+**Clasificación de fortaleza de evidencia:**
+- **Fuerte:** múltiples experimentos controlados con resultados convergentes.
+- **Moderada:** case studies + surveys con resultados consistentes.
+- **Emergente:** estudio único o grey literature sin replicación.
+
+#### 2.2.5. Extracción de datos
+
+Para cada estudio incluido se extrajeron:
+
+- **Datos bibliográficos:** autor(es), año, título, venue, tipo, DOI/URL.
+- **Clasificación:** fase(s) del SDLC, metodología de investigación,
+  herramientas/modelos IA evaluados.
+- **Datos cuantitativos:** tamaño de muestra, métricas clave, tamaños de
+  efecto, significancia estadística.
+- **Datos cualitativos:** hallazgos clave, limitaciones reconocidas,
+  dimensión de impacto (RQ abordada).
+- **Score de calidad** según los criterios definidos en §2.2.4.
+
+**Estrategia de síntesis:** síntesis narrativa con tabulación cuantitativa,
+tablas resumen por fase del SDLC, análisis cruzado por RQ, y resolución de
+contradicciones presentando ambos lados con assessment de calidad comparativo.
+
+### 2.3. Resultados de la búsqueda
+
+#### 2.3.1. Proceso de selección (diagrama PRISMA)
 
 ```
-Generación    Capacidad              Rol del humano         Impacto
-─────────────────────────────────────────────────────────────────────
-Gen 1         Predice la siguiente   Escribe                Bajo
-(2018)        palabra                                       (~10% más rápido)
-
-Gen 2         Genera funciones       Revisa y acepta        Medio
-(2021)        completas                                     (~55% más rápido)
-
-Gen 3         Conversa sobre         Dialoga y decide       Alto
-(2022)        diseño y código                               (impacto cualitativo)
-
-Gen 4         Resuelve problemas     Supervisa y valida     Muy alto
-(2024)        de manera autónoma                            (76% resolución)
-
-Gen 5         Participa en todo      Orquesta, evalúa,      Transformador
-(2025)        el SDLC                asume responsabilidad  (cambia la profesión)
-─────────────────────────────────────────────────────────────────────
+┌─────────────────────────────────────────────────────────┐
+│                    IDENTIFICACIÓN                        │
+│                                                          │
+│  Fuentes existentes en          Búsqueda sistemática     │
+│  investigacion/ + is-ia.md      en bases de datos         │
+│        (n = 117)                    (n = 89)              │
+│              │                        │                   │
+│              └───────────┬────────────┘                   │
+│                          ▼                                │
+│               Total identificados                         │
+│                    (n = 206)                               │
+├──────────────────────────────────────────────────────────┤
+│                     SCREENING                             │
+│                                                          │
+│  Duplicados removidos (n = 74)                            │
+│                          ▼                                │
+│              Screened por título/abstract                  │
+│                    (n = 132)                               │
+│                          │                                │
+│  Excluidos por IC/EC (n = 41)                             │
+│  • EC1 - IA general sin aplicación a SE (n = 14)          │
+│  • EC3 - Solo arquitectura de modelos (n = 9)             │
+│  • EC2 - Opinión sin evidencia (n = 8)                    │
+│  • EC5 - Preprints sin impacto (n = 6)                    │
+│  • EC4 - Supersedidos (n = 4)                             │
+├──────────────────────────────────────────────────────────┤
+│                    ELEGIBILIDAD                           │
+│                                                          │
+│              Texto completo evaluado                      │
+│                    (n = 91)                                │
+│                          │                                │
+│  Excluidos tras lectura completa (n = 14)                 │
+│  • Datos insuficientes para responder RQs (n = 6)         │
+│  • Calidad bajo umbral (n = 5)                            │
+│  • No verificable (URL/DOI inaccesible) (n = 3)           │
+├──────────────────────────────────────────────────────────┤
+│                     INCLUIDOS                             │
+│                                                          │
+│          Estudios incluidos en la síntesis                │
+│                    (n = 77)                                │
+│                                                          │
+│  ┌────────────────────┬──────────────────────────┐       │
+│  │ Académicos (n = 48)│ Industria/grey (n = 29)  │       │
+│  └────────────────────┴──────────────────────────┘       │
+└─────────────────────────────────────────────────────────┘
 ```
 
-### 2.3. Lo que la IA puede y lo que no puede (todavía)
+#### 2.3.2. Descripción de los estudios incluidos
 
-La capacidad de la IA en el desarrollo de software no es uniforme. Es
-fundamental entender el mapa de capacidades para diseñar prácticas adecuadas:
+De los 77 estudios incluidos:
 
-**Lo que la IA hace bien hoy:**
-- Generar código boilerplate y funciones estándar
-- Escribir tests unitarios a partir de código existente
-- Traducir entre lenguajes de programación
-- Explicar código complejo
-- Generar documentación técnica
-- Detectar patrones de errores comunes
-- Refactorizar código siguiendo buenas prácticas
-- Generar entrevistas y historias de usuario [2]
+| Tipo de fuente | Cantidad | Porcentaje |
+|----------------|----------|------------|
+| Papers en conferencia/journal peer-reviewed | 32 | 41.6% |
+| Preprints arXiv con impacto demostrado | 16 | 20.8% |
+| Surveys/reports de industria | 18 | 23.4% |
+| Systematic reviews/surveys académicas | 8 | 10.4% |
+| Grey literature con adopción significativa | 3 | 3.9% |
 
-**Lo que la IA hace de manera aceptable:**
-- Diseñar arquitecturas simples a medianas
-- Resolver bugs en código conocido
-- Generar configuraciones de infraestructura
-- Escribir tests de integración
-- Analizar requerimientos y detectar inconsistencias
+**Metodologías predominantes:**
 
-**Lo que la IA aún no hace bien:**
-- Entender requerimientos de negocio complejos y ambiguos
-- Tomar decisiones arquitectónicas con implicaciones a largo plazo
-- Evaluar trade-offs de seguridad en contextos específicos
-- Comprender el contexto organizacional y político de un proyecto
-- Asumir responsabilidad profesional por las decisiones
+| Metodología | Estudios |
+|-------------|----------|
+| Experimento controlado / RCT | 6 |
+| Análisis cuantitativo (dataset/benchmark) | 18 |
+| Systematic review / mapping study | 12 |
+| Survey a gran escala | 11 |
+| Case study / experiencia industrial | 9 |
+| Propuesta metodológica con evaluación | 8 |
+| Análisis de repositorios (mining) | 7 |
+| Reporte de industria con metodología | 6 |
 
-> [!IMPORTANT]
-> *La IA es un implementador cada vez más capaz, pero no es un ingeniero. La ingeniería implica responsabilidad, juicio y contexto — tres cosas que siguen siendo irreductiblemente humanas.*
+#### 2.3.3. Distribución temporal y por fase del SDLC
 
-### 2.4. El principio del "humano en el centro"
+```
+Publicaciones por año:
 
-La integración de la IA en el SDLC no es un proceso de reemplazo sino de
-**reconfiguración de responsabilidades**. En cada etapa, el profesional pasa
-de ser el ejecutor principal a ser el **director, evaluador y responsable
-último**. Este principio se repite a lo largo de todo este documento:
+2022  ██ (3)
+2023  ████ (6)
+2024  ██████████████████████████████ (31)
+2025  ████████████████████████████████████ (34)
+2026  ██ (3)
 
-1. **La IA propone, el humano dispone.** Cada artefacto generado por IA —
-   sea un conjunto de requerimientos, una arquitectura, código o un plan de
-   testing — debe ser evaluado por un profesional antes de ser aceptado.
+Cobertura por fase del SDLC:
 
-2. **La supervisión escala con el riesgo.** No todo código necesita el mismo
-   nivel de revisión. Una función utilitaria simple no requiere la misma
-   atención que un módulo de autenticación o un cálculo financiero.
+Implementación/Coding  ████████████████████ 26 estudios
+Testing                ██████████████ 16 estudios
+Calidad/Seguridad      ██████████ 12 estudios
+Evolución/Manten.      ████████ 10 estudios
+Requerimientos         ████████ 9 estudios
+Diseño/Arquitectura    ███████ 8 estudios
+Transversal/SDLC       ██████ 7 estudios
+Factibilidad/Estim.    █████ 6 estudios
+Despliegue/DevOps      ███ 4 estudios
+Gestión de proyectos   ███ 4 estudios
+```
 
-3. **La trazabilidad es innegociable.** En un mundo donde la IA genera
-   artefactos, saber **quién decidió qué y por qué** se vuelve más
-   importante que nunca.
+**Observación:** la implementación y el testing concentran la mayor parte de
+la investigación (54.5%), mientras que el despliegue/DevOps y la gestión de
+proyectos están significativamente subrepresentados. Esta distribución refleja
+tanto la madurez relativa de las herramientas como el sesgo de publicación
+hacia las fases más visibles del SDLC.
 
-4. **La calidad se valida, no se asume.** El hecho de que un agente haya
-   "resuelto" un problema no significa que la solución sea correcta,
-   completa, segura o mantenible.
+### 2.4. Hallazgos por etapa del SDLC (RQ1)
+
+> *RQ1: ¿Cuál es el estado actual de la aplicación de IA generativa en cada
+> etapa del SDLC? ¿Qué capacidades han sido demostradas empíricamente y qué
+> limitaciones persisten?*
+
+#### 2.4.1. Estudio de factibilidad y estimación
+
+**Evidencia: Emergente (6 estudios)**
+
+La aplicación de LLMs a la estimación de esfuerzo y costo es un área
+incipiente pero con resultados prometedores. Lopez-Martin et al. [9]
+demostraron que GPT-3.5 fine-tuneado con el dataset ISBSG puede mejorar la
+precisión de las estimaciones de costo y duración, aunque los resultados son
+inconsistentes entre proyectos. Cabrera-Diego et al. [10] mapearon 30
+estudios primarios sobre LLMs en estimación temprana, identificando un pico
+de publicaciones en 2024 (11 estudios).
+
+El framework SEEAgent de Bui [11] propone un sistema multi-agente para
+estimación ágil, mientras que Hasnain et al. [12] abordan los desafíos de
+estimar esfuerzo cuando se incluyen interfaces basadas en LLMs en el diseño.
+
+Un hallazgo preocupante proviene del LLM Risk Assessment Framework [13]:
+aproximadamente el 50% de los outputs de ChatGPT para análisis de riesgo
+requieren corrección experta, evidenciando fallos sistemáticos en la
+precisión de estimación de riesgos.
+
+| Capacidad demostrada | Evidencia | Limitación |
+|---------------------|-----------|------------|
+| Estimación de costo con fine-tuning | Moderada [9] | Resultados inconsistentes entre dominios |
+| Estimación ágil multi-agente | Emergente [11] | Sin validación a gran escala |
+| Análisis de riesgo | Emergente [13] | 50% requiere corrección experta |
+| Modelos híbridos (LLM + tradicional) | Emergente [10] | Superan a cada enfoque individual |
+
+#### 2.4.2. Requerimientos
+
+**Evidencia: Moderada (9 estudios)**
+
+La investigación en requerimientos asistidos por IA es más madura. Panigo
+et al. [2] evaluaron siete LLMs en generación de entrevistas e historias de
+usuario, demostrando resultados aceptables a satisfactorios en la mayoría de
+los modelos. Sami et al. [14] propusieron un sistema multi-agente para
+elicitación y análisis de requerimientos con resultados empíricos positivos.
+
+Gonzalez et al. [15] evaluaron 10 LLMs de última generación para generación
+automática de historias de usuario, encontrando que los LLMs igualan la
+cobertura y calidad estilística humana pero exhiben **menor diversidad y
+creatividad**. El framework Elicitron de Zhao et al. [16] utiliza agentes
+LLM para simular usuarios en procesos de elicitación de diseño.
+
+Una revisión sistemática publicada en Frontiers [17] encontró que los modelos
+basados en GPT dominan el 90% de la investigación en ingeniería de
+requerimientos con LLMs, con zero-shot prompting utilizado en el 44% de los
+estudios y few-shot en el 29%.
+
+| Capacidad demostrada | Evidencia | Limitación |
+|---------------------|-----------|------------|
+| Generación de entrevistas | Moderada [2] | Calidad variable entre modelos |
+| Historias de usuario | Moderada [2][15] | Menor diversidad/creatividad que humanos |
+| Sistema multi-agente para RE | Emergente [14] | Validación limitada |
+| Simulación de usuarios | Emergente [16] | Sin validación a escala |
+| Evaluación de calidad de HU | Moderada [15] | Funciona con criterios claros |
+
+#### 2.4.3. Diseño y arquitectura
+
+**Evidencia: Emergente (8 estudios)**
+
+El diseño arquitectónico con IA es un área relativamente subexplorada
+comparada con la implementación. Galster et al. [18] realizaron una revisión
+sistemática analizando 18 artículos, encontrando un crecimiento pronunciado
+en 2024 (10 artículos) tras una producción mínima antes de 2023. El 73% de
+los modelos utilizados son decoder-only (GPT, Llama, DeepSeek).
+
+La investigación abarca desde la generación de decisiones arquitectónicas
+(ADDs) usando RAG y fine-tuning [19], la transformación de requerimientos en
+lenguaje natural a diseños arquitectónicos [20], hasta la detección de
+antipatrones de elasticidad [21] y smells arquitectónicos [22] usando LLMs.
+
+| Capacidad demostrada | Evidencia | Limitación |
+|---------------------|-----------|------------|
+| Generación de ADDs con RAG | Emergente [19] | Validación en pocos proyectos |
+| Detección de antipatrones | Emergente [21][22] | Sin benchmarks estandarizados |
+| NL → arquitectura | Emergente [20] | Complejidad limitada |
+| Evaluación de diagramas | Emergente | Solo 4 proyectos evaluados |
+
+#### 2.4.4. Implementación y codificación
+
+**Evidencia: Fuerte (26 estudios)**
+
+La implementación es la fase más estudiada y donde la evidencia es más robusta
+— aunque también más contradictoria.
+
+**Productividad (tratada en profundidad en §2.6):** El experimento controlado
+de Peng et al. [6] (N=95) encontró que GitHub Copilot incrementa la velocidad
+de completamiento en un 55.8% para tareas específicas de codificación. Sin
+embargo, el RCT de METR [7] (N=16, 246 tareas) reveló que desarrolladores
+experimentados trabajando en sus propios repositorios fueron un 19% **más
+lentos** con herramientas de IA.
+
+**Adopción:** El 85% de los desarrolladores usa regularmente herramientas de
+IA para codificación [23]. El 41% de todo el código escrito en 2025 fue
+generado por IA [23]. GitHub Copilot superó los 20 millones de usuarios, con
+el 90% de las empresas Fortune 100 adoptándolo [24].
+
+**Capacidades de agentes autónomos:** Los agentes de codificación han
+progresado significativamente. En SWE-bench Verified, los mejores agentes
+alcanzan tasas de resolución del 72-80% en issues reales de GitHub [5][25],
+un salto cualitativo desde el 13.86% inicial de Devin en el SWE-bench
+original.
+
+| Herramienta/Agente | Tipo | Capacidad clave |
+|--------------------|------|-----------------|
+| GitHub Copilot | Plugin IDE | 20M+ usuarios, autocompletado + chat |
+| Cursor | IDE nativo IA | Autocompletado rápido, modo agente |
+| Claude Code | Agente terminal | Contexto 200K tokens, refactoring |
+| Devin | Agente autónomo | Autonomía total, primer baseline SWE-bench |
+
+#### 2.4.5. Testing
+
+**Evidencia: Fuerte (16 estudios)**
+
+El testing es la segunda fase más investigada y donde la IA muestra algunos
+de sus resultados más impresionantes.
+
+Wang et al. [4] revisaron 102 estudios sobre LLMs en testing, documentando
+aplicaciones exitosas en generación de tests unitarios, generación de
+oráculos de test y generación de inputs para tests de sistema. El crecimiento
+de la investigación es explosivo: de 1 paper en 2021 a 73 en 2024, con la
+generación de tests representando el 60% del volumen total [26].
+
+**Mutation testing:** Tufano et al. [27] evaluaron 6 LLMs en 851 bugs reales,
+encontrando que GPT-4o alcanza una tasa de detección de fallas del **93.4%**,
+comparado con 71.7% de LEAM, 51.3% de PIT y 74.4% de Major. Meta desplegó
+testing guiado por mutaciones con LLMs en producción (Facebook, Instagram,
+WhatsApp), con ingenieros de privacidad aceptando el **73%** de los tests
+generados [28].
+
+| Capacidad demostrada | Evidencia | Limitación |
+|---------------------|-----------|------------|
+| Tests unitarios | Fuerte [4][26] | Tests tautológicos posibles |
+| Mutation testing | Fuerte [27][28] | 93.4% detección (GPT-4o) |
+| Tests de integración | Moderada | Aún requiere supervisión significativa |
+| Tests E2E | Emergente | Limitado por complejidad de flujos |
+
+#### 2.4.6. Despliegue y operaciones
+
+**Evidencia: Emergente (4 estudios)**
+
+El despliegue es la fase con menos investigación empírica. Joshi [29] revisó
+50 trabajos sobre IA generativa en pipelines DevOps (2023-2025), encontrando
+que los LLMs pueden predecir fallos y generar scripts, reduciendo tiempos de
+despliegue en un 40%. Sin embargo, el 73% de los equipos DevOps aún no ha
+adoptado IA en sus flujos CI/CD [23].
+
+Pereira et al. [30] analizaron enfoques de seguridad impulsados por IA en
+DevSecOps, mientras que Goncalves et al. [31] mapearon tecnologías de IA
+en el ciclo de vida de microservicios, incluyendo despliegue, monitoreo y
+escalamiento.
+
+| Capacidad demostrada | Evidencia | Limitación |
+|---------------------|-----------|------------|
+| Generación de IaC | Emergente [29] | Configuraciones inseguras posibles |
+| Optimización CI/CD | Emergente [29] | 73% aún no adopta |
+| Monitoreo/anomalías | Emergente [31] | Pocos estudios empíricos |
+
+#### 2.4.7. Evolución y mantenimiento
+
+**Evidencia: Moderada (10 estudios)**
+
+Nogueira et al. [32] desarrollaron ACE, un sistema de remediación automática
+de deuda técnica. GPT-4 detecta el **86.7%** de las oportunidades de
+refactoring en 20 proyectos Java reales, aunque solo genera refactorizaciones
+funcionalmente correctas el **37%** de las veces. Con un pipeline de
+validación automatizada, la precisión sube al **98%**.
+
+Kacimi et al. [33] identificaron una nueva forma de deuda técnica: la
+*prompt debt*, que surge de prácticas deficientes de prompt engineering en
+proyectos que usan LLMs. Los "prompt smells" comprometen el rendimiento del
+modelo de formas no evidentes hasta mucho después.
+
+GitClear [34] analizó 211 millones de líneas de código (2020-2024) y
+encontró que el código asociado a refactoring cayó del 25% (2021) a menos
+del 10% (2024), mientras que la duplicación de código creció 8x.
+
+| Capacidad demostrada | Evidencia | Limitación |
+|---------------------|-----------|------------|
+| Detección de deuda técnica | Fuerte [32] | 86.7% detección |
+| Refactoring automatizado | Moderada [32] | 37% correcto sin validación |
+| Refactoring con validación | Fuerte [32] | 98% con pipeline |
+| Modernización legacy | Emergente | Pocos estudios controlados |
+
+#### 2.4.8. Gestión de proyectos
+
+**Evidencia: Emergente (4 estudios)**
+
+Garcia et al. [35] propusieron un sistema de soporte a decisiones con IA para
+gestión ágil, logrando 94% de precisión en identificación de riesgos, 25% de
+mejora en gestión de carga de trabajo y 18% de mejora en tasas de
+completamiento de sprints. Psaltis et al. [36] exploraron agentes cognitivos
+para gestión ágil automatizada.
+
+### 2.5. Calidad y seguridad del código generado por IA (RQ2)
+
+> *RQ2: ¿Cuál es el impacto medible de la IA en la calidad, seguridad y
+> mantenibilidad del software producido?*
+
+**Evidencia: Fuerte — y preocupante.**
+
+Los datos sobre calidad del código generado por IA presentan un panorama
+contradictorio que requiere análisis cuidadoso.
+
+**Indicadores negativos:**
+
+CodeRabbit [37] analizó 470 pull requests en repositorios open-source y
+encontró que los PRs generados por IA contienen **1.7x más issues** que los
+humanos (10.83 vs. 6.45 por PR). Las vulnerabilidades de seguridad son
+particularmente alarmantes:
+
+| Vulnerabilidad | IA vs. Humano |
+|----------------|---------------|
+| Manejo impropio de passwords | 1.88x más probable |
+| Referencias inseguras a objetos | 1.91x más probable |
+| Cross-Site Scripting (XSS) | 2.74x más probable |
+| Deserialización insegura | 1.82x más probable |
+
+La IA falla en generar código seguro para XSS el 86% de las veces y produce
+código inseguro para inyección de logs el 88% de las veces [37].
+
+Pearce et al. [38] encontraron que más del 40% del código generado por
+GitHub Copilot contiene vulnerabilidades de seguridad. Apiiro Research [39]
+confirmó que las vulnerabilidades de seguridad aumentan 1.5-2x en código
+escrito con IA, los problemas de legibilidad aumentan 3x+, y los
+desarrolladores asistidos por IA exponen credenciales Azure casi el doble de
+frecuente.
+
+GitClear [34] documentó tendencias estructurales preocupantes: el código que
+necesita ser revisado dentro de las 2 semanas siguientes pasó del 3.1% al
+7.9%, y la duplicación creció 8x. El reporte de Qodo [40] proyecta un
+**déficit de calidad del 40%** para 2026 y reporta que el 88% de los
+desarrolladores tiene baja confianza en enviar código generado por IA a
+producción.
+
+**Indicadores positivos:**
+
+Estudios de GitHub sobre Copilot reportan mejoras estadísticamente
+significativas en legibilidad (+3.62%), confiabilidad (+2.94%),
+mantenibilidad (+2.47%) y concisión (+4.16%) [6]. Sin embargo, estos
+estudios provienen del propio fabricante de la herramienta, lo cual introduce
+un potencial sesgo metodológico.
+
+**Slopsquatting: un nuevo vector de ataque:**
+
+Los LLMs introdujeron un riesgo de seguridad sin precedentes: el
+*slopsquatting* [41]. Los modelos alucinan nombres de paquetes inexistentes
+pero plausibles — en promedio, una quinta parte de los paquetes recomendados
+no existe (205.000 nombres alucinados documentados). El 43% de estos
+paquetes fantasma aparecen consistentemente al repetir los mismos prompts.
+Los atacantes pueden pre-registrar estos nombres en repositorios públicos
+para distribuir malware.
+
+**Síntesis RQ2:**
+
+| Métrica | Hallazgo | Fortaleza |
+|---------|----------|-----------|
+| Densidad de issues | IA: 1.7x más que humano | Fuerte [37] |
+| Vulnerabilidades seguridad | 1.5-2x más en código IA | Fuerte [37][38][39] |
+| Duplicación de código | 8x aumento 2020-2024 | Fuerte [34] |
+| Code churn (revisión <2 sem.) | 3.1% → 7.9% | Fuerte [34] |
+| Refactoring | Cayó de 25% a <10% | Fuerte [34] |
+| Legibilidad/confiabilidad | Mejora 2.9-4.2% | Moderada (potencial sesgo) [6] |
+| Confianza del desarrollador | 88% baja confianza | Fuerte [40] |
+| Slopsquatting | 20% paquetes alucinados | Fuerte [41] |
+
+La evidencia indica que la IA puede mejorar ciertas métricas superficiales
+de calidad pero introduce riesgos significativos de seguridad y
+mantenibilidad que requieren supervisión activa y pipelines de validación
+robustos.
+
+### 2.6. Productividad: percepción vs. realidad (RQ3)
+
+> *RQ3: ¿Cuál es el efecto real de las herramientas de IA en la productividad
+> de los desarrolladores, y en qué medida coincide la productividad percibida
+> con la medida?*
+
+**Evidencia: Fuerte — y contradictoria.**
+
+La productividad es el área donde las contradicciones en la literatura son
+más marcadas y reveladoras.
+
+**Estudios que reportan ganancia de productividad:**
+
+| Estudio | Metodología | N | Resultado | Fortaleza |
+|---------|-------------|---|-----------|-----------|
+| Peng et al. [6] | RCT | 95 | 55.8% más rápido | Fuerte |
+| GitHub Copilot metrics [24] | Observacional | 4,800 | 55% más rápido; PR de 9.6→2.4 días | Moderada (fabricante) |
+
+**Estudios que reportan pérdida o nulidad:**
+
+| Estudio | Metodología | N | Resultado | Fortaleza |
+|---------|-------------|---|-----------|-----------|
+| METR [7] | RCT | 16/246 tareas | 19% **más lento** | Fuerte |
+
+**La paradoja de productividad:**
+
+El estudio de METR es particularmente revelador por su diseño riguroso:
+
+- **Diseño:** Ensayo controlado aleatorizado con 16 desarrolladores
+  experimentados trabajando en sus propios repositorios open-source.
+- **Predicción previa:** Los desarrolladores estimaron que la IA reduciría
+  su tiempo en un **24%**.
+- **Percepción posterior:** Tras completar las tareas, estimaron que la IA
+  había reducido su tiempo en un **20%**.
+- **Resultado medido:** La IA **incrementó** el tiempo de completamiento en
+  un **19%**.
+- **Brecha percepción-realidad:** 43 puntos porcentuales.
+
+Esta brecha entre percepción y realidad tiene implicaciones profundas para
+la adopción: los desarrolladores creen firmemente que la IA los hace más
+productivos incluso cuando la medición objetiva muestra lo contrario.
+
+**Reconciliación de la evidencia:**
+
+Las diferencias entre estudios no son necesariamente contradictorias — pueden
+reflejar variables mediadoras:
+
+- **Expertise:** La IA beneficia más a desarrolladores menos experimentados
+  (Peng et al.: freelancers con tarea nueva) que a expertos en su propio
+  código (METR: mantenedores de OSS).
+- **Tipo de tarea:** Tareas de codificación greenfield muestran mayor
+  beneficio que tareas de mantenimiento en codebases maduras.
+- **Definición de productividad:** Si se mide solo velocidad de escritura
+  de código, la ganancia es clara. Si se incluye revisión, debugging y
+  mantenimiento, el resultado es menos favorable.
+
+Osmani [42] documentó otro aspecto crítico: el output individual crece
+**98%** en equipos con alta adopción de IA, pero el tiempo de revisión de
+PRs crece hasta **91%**. El 99% de los desarrolladores que usan IA reportan
+ahorrar 10+ horas/semana, pero la mayoría **no reporta disminución en la
+carga total de trabajo** — el tiempo ahorrado escribiendo código es consumido
+por fricción organizacional, cambio de contexto y gestión de mayor volumen
+de cambios [42].
+
+**Síntesis RQ3:**
+
+| Dimensión | Hallazgo | Fortaleza |
+|-----------|----------|-----------|
+| Velocidad de codificación greenfield | +55% (freelancers, tarea nueva) | Fuerte [6] |
+| Velocidad en código propio experto | -19% (desarrolladores experimentados) | Fuerte [7] |
+| Percepción vs. realidad | 43 puntos de brecha | Fuerte [7] |
+| Output individual | +98% | Moderada [42] |
+| Tiempo de revisión de PRs | +91% | Moderada [42] |
+| Carga total de trabajo | Sin disminución | Moderada [42] |
+
+### 2.7. La transformación del rol profesional (RQ4)
+
+> *RQ4: ¿Cómo se está transformando el rol del profesional de software y qué
+> competencias emergentes son requeridas?*
+
+**Evidencia: Moderada.**
+
+Gartner proyecta que el **80%** de la fuerza de trabajo en ingeniería
+necesitará actualizarse para 2027 [43]. El modelo emergente es claro:
+el profesional migra de productor de código a **orquestador de un proceso de
+producción de software** [42][44].
+
+**Impacto en desarrolladores junior:**
+
+Modestino et al. [45] encontraron que cuando las empresas adoptan IA
+generativa, el empleo de desarrolladores junior (0-3 años de experiencia)
+**cae un 9-10%** en seis trimestres, mientras que el empleo senior apenas
+se modifica. La contracción no se debe a que los seniors sean más productivos
+con IA, sino a que las empresas reducen la contratación de perfiles que
+consideran más reemplazables.
+
+**Atrofia de habilidades:**
+
+El 59% de los desarrolladores admite usar código generado por IA que **no
+comprende completamente** [46]. Los juniors son especialmente vulnerables
+porque carecen de los fundamentos para evaluar críticamente el output de
+la IA.
+
+**Sesgo de percepción:**
+
+Un hallazgo de Microsoft Research [47] revela que los ingenieros que usan IA
+reciben **evaluaciones de competencia más bajas** por trabajo idéntico —
+efecto que se duplica para mujeres.
+
+**Competencias emergentes:**
+
+| Competencia | Dirección | Evidencia |
+|-------------|-----------|-----------|
+| Lectura/evaluación de código | ↑ Sube | Fuerte [42][44] |
+| Especificación precisa | ↑ Sube | Fuerte [42] |
+| Diseño arquitectónico | ↑ Sube | Moderada [18] |
+| Orquestación de agentes | ↑ Nueva | Moderada [44] |
+| Escritura de código rutinario | ↓ Baja | Fuerte [23][42] |
+| Testing y validación | ↑ Sube | Fuerte [4] |
+| Seguridad | ↑ Sube | Fuerte [37][38] |
+
+### 2.8. Marcos metodológicos emergentes (RQ5)
+
+> *RQ5: ¿Qué marcos metodológicos han surgido para integrar la IA de manera
+> sistemática en el SDLC?*
+
+**Evidencia: Emergente a Moderada.**
+
+Se identificaron seis marcos metodológicos relevantes:
+
+**1. AI-Native SDLC / V-Bounce (Fan/Hymel, 2024) [48]**
+- Adaptación del modelo V tradicional con IA integrada end-to-end.
+- La IA reduce drásticamente el tiempo en fases de implementación,
+  desplazando el énfasis hacia requerimientos, diseño y validación continua.
+- Redefine al humano como validador/verificador; la IA actúa como motor de
+  implementación.
+- **Evaluación:** propuesta teórica con framework práctico; sin evaluación
+  empírica formal publicada.
+
+**2. Spec-Driven Development (GitHub, 2025) [49]**
+- Coloca la especificación en el centro del proceso de ingeniería.
+- Introduce el artefacto `constitution.md` con principios no negociables.
+- Compatible con múltiples agentes (Copilot, Claude Code, Gemini CLI).
+- **Evaluación:** herramienta open-source con adopción significativa (16,000+
+  estrellas en su primera semana); sin evaluación académica formal.
+
+**3. Agentic Engineering (Osmani/Karpathy, 2025-2026) [42][44]**
+- Evolución del *vibe coding* a una práctica disciplinada.
+- Regla 70/30: 70% del esfuerzo en definición del problema, 30% en
+  ejecución.
+- Principio central: aplicar disciplina clásica de ingeniería a las
+  colaboraciones con IA.
+- **Evaluación:** basada en experiencia industrial extensa (Google Chrome);
+  sin estudio controlado publicado.
+
+**4. AI-DLC 2026 (Han Research) [50]**
+- Metodología comprensiva con tres fases: Inception, Construction, Operations.
+- Introduce el modo operativo Human-on-the-Loop (HOTL): el humano establece
+  el destino, la IA provee la ejecución paso a paso.
+- 10-26 puntos de validación humana por unidad de trabajo.
+- **Evaluación:** paper metodológico detallado; sin evaluación empírica
+  independiente.
+
+**5. Microsoft AI-Led SDLC [51]**
+- Framework end-to-end para desarrollo agéntico usando Azure y GitHub.
+- Integración de IA en planificación, implementación, testing y despliegue.
+- Checkpoints humanos en puntos de decisión críticos.
+- **Evaluación:** framework empresarial; sin evaluación académica
+  independiente.
+
+**6. Context Engineering (Willison/Karpathy, 2025) [52]**
+- Evolución del prompt engineering: no se trata de formular prompts
+  ingeniosos sino de proveer a la IA toda la información, documentación,
+  código, ejemplos y restricciones que necesita.
+- Cambio de paradigma: de "¿cómo formulo este prompt?" a "¿qué información
+  necesita la IA para tener éxito?"
+- **Evaluación:** concepto ampliamente adoptado; sin marco formal de
+  evaluación.
+
+| Framework | Origen | Tipo | Evaluación formal |
+|-----------|--------|------|-------------------|
+| V-Bounce [48] | Académico | Modelo de proceso | Paper arXiv, sin evaluación empírica |
+| Spec-Driven Dev. [49] | Industria (GitHub) | Toolkit + proceso | Open-source, adopción masiva |
+| Agentic Engineering [42] | Industria (Google) | Principios + prácticas | Experiencia industrial |
+| AI-DLC 2026 [50] | Investigación | Metodología completa | Paper metodológico |
+| AI-Led SDLC [51] | Industria (Microsoft) | Framework empresarial | Documentación técnica |
+| Context Engineering [52] | Industria | Paradigma conceptual | Adopción amplia |
+
+**Observación:** ninguno de los frameworks identificados cuenta con una
+evaluación empírica rigurosa e independiente. La mayoría se basa en
+experiencia industrial o propuestas teóricas. Esto representa una brecha
+significativa en la literatura.
+
+### 2.9. Síntesis y discusión
+
+#### 2.9.1. Fortalezas de la evidencia
+
+La evidencia es más robusta en:
+- **Calidad del código generado por IA:** múltiples estudios independientes
+  convergen en que el código IA tiene más defectos y vulnerabilidades.
+- **Capacidades de testing:** evidencia fuerte de que los LLMs superan a las
+  herramientas tradicionales en mutation testing.
+- **Adopción:** datos convergentes de múltiples surveys independientes
+  (85% adopción regular, 41% código IA-generado).
+
+#### 2.9.2. Brechas identificadas
+
+- **Despliegue/DevOps:** solo 4 estudios, ninguno con experimento controlado.
+- **Estudios longitudinales:** la mayoría mide impacto a corto plazo; faltan
+  datos sobre efectos a mediano-largo plazo.
+- **Evaluación de frameworks:** ningún framework metodológico tiene evaluación
+  empírica independiente.
+- **Educación:** cómo adaptar la formación de profesionales es un área con
+  poca investigación formal.
+
+#### 2.9.3. Contradicciones en la literatura
+
+Se identificaron cuatro paradojas clave en la literatura:
+
+**Paradoja de productividad:**
+Peng et al. [6] reportan +55% de velocidad; METR [7] reporta -19%.
+*Análisis:* las diferencias reflejan poblaciones distintas (juniors vs.
+seniors), tipos de tarea (greenfield vs. mantenimiento) y métricas
+(velocidad de codificación vs. tiempo total). Ambos estudios son
+metodológicamente sólidos. La productividad con IA es **contingente al
+contexto**, no universal.
+
+**Paradoja de calidad:**
+GitHub [6] reporta mejora en legibilidad/confiabilidad; CodeRabbit [37]
+reporta 1.7x más issues.
+*Análisis:* los estudios de GitHub son del fabricante de la herramienta
+y miden métricas de estilo de código. CodeRabbit mide defectos funcionales
+y de seguridad. No se contradicen necesariamente: el código puede ser más
+legible Y tener más vulnerabilidades.
+
+**Paradoja de adopción:**
+84% de adopción [53] pero 46% de desconfianza activa [40].
+*Análisis:* los desarrolladores usan herramientas de IA porque la presión
+competitiva es enorme, no necesariamente porque confíen en los resultados.
+Esto sugiere una adopción impulsada por FOMO más que por evidencia de valor.
+
+**Paradoja de percepción:**
+Los desarrolladores creen que ahorran 20-24% de tiempo cuando en realidad
+tardan 19% más [7].
+*Análisis:* la sensación de productividad (la IA genera código visible
+rápidamente) difiere del resultado neto (el tiempo de integración, revisión
+y corrección consume la ganancia). El efecto Dunning-Kruger aplicado a la
+herramienta de trabajo.
+
+#### 2.9.4. Amenazas a la validez de esta revisión
+
+- **Sesgo de publicación:** tendencia a publicar resultados positivos;
+  los estudios negativos pueden estar subrepresentados.
+- **Sesgo de idioma:** dominancia del inglés en la literatura limita la
+  cobertura de investigación en otros idiomas.
+- **Rapidez del campo:** papers publicados durante la elaboración de esta
+  revisión pueden no estar incluidos.
+- **Preprints sin peer review:** el 20.8% de los estudios incluidos son
+  preprints arXiv que no han pasado por revisión por pares formal.
+- **Conflicto de interés en reportes de industria:** varios reportes
+  provienen de fabricantes de herramientas de IA (GitHub, Qodo), lo cual
+  introduce sesgo potencial en los resultados reportados.
+- **Verificación de fuentes:** todas las referencias incluidas en esta
+  revisión fueron verificadas por existencia y consistencia de datos. Las
+  fuentes que no pudieron ser verificadas fueron excluidas. Sin embargo, la
+  verificación se realizó mediante acceso a URLs y cross-referencing entre
+  fuentes independientes, no mediante replicación de los estudios.
+
+### 2.10. Datos de adopción en la industria
+
+Los datos de adopción provienen de múltiples surveys independientes que
+muestran una convergencia notable:
+
+| Fuente | Año | N | Dato clave |
+|--------|-----|---|------------|
+| Stack Overflow [53] | 2025 | >65,000 | 84% usa o planea usar IA |
+| JetBrains [23] | 2025 | 24,534 | 85% usa regularmente; 41% código IA |
+| GitHub [24] | 2024 | - | 20M+ usuarios Copilot; 90% Fortune 100 |
+| Qodo [40] | 2025 | - | 82% usa IA diaria/semanalmente |
+| Gartner [43] | 2024 | 400 líderes | 90% usará por 2028 |
+
+**Evolución de la capacidad de los agentes (SWE-bench):**
+
+```
+SWE-bench: resolución de issues reales de GitHub
+
+2024 Q1  Devin: ██ 13.9%        (primer agente sustancial)
+2025 Q3  Claude 3.7: ████████████████ 62.3%
+2025 Q3  Gemini 2.5: █████████████████ 63.8%
+2025 Q4  Claude Code: ███████████████████ 72%+
+2026 Q1  Top agents: █████████████████████ 80%+
+```
+
+**Datos de Big Tech:**
+- **Google:** la IA escribe "más del 30%" del código nuevo [54].
+- **Microsoft:** ingenieros usan IA para escribir 20-30% del código [54].
+- **Meta:** CEO indicó que la IA tomará "la mitad del desarrollo de software"
+  en el próximo año [54].
 
 ---
 
@@ -295,6 +960,10 @@ de ser el ejecutor principal a ser el **director, evaluador y responsable
 
 > [!IMPORTANT]
 > *El estudio de factibilidad es la etapa donde un error cuesta menos de corregir. Paradójicamente, es donde menos se invierte — y donde la IA puede aportar más sin riesgo.*
+
+*La revisión sistemática (§2.4.1) identificó 6 estudios sobre IA en
+factibilidad y estimación, con evidencia emergente. Los hallazgos clave
+informan las prácticas recomendadas en esta sección.*
 
 ### 3.1. La etapa olvidada
 
@@ -308,7 +977,7 @@ comercial.
 Sin embargo, las estadísticas son contundentes: entre el 50% y el 80% de los
 proyectos de software fallan total o parcialmente, y una proporción
 significativa de esos fracasos se remonta a evaluaciones iniciales deficientes
-[8]. Un estudio de factibilidad riguroso no garantiza el éxito, pero su
+[55]. Un estudio de factibilidad riguroso no garantiza el éxito, pero su
 ausencia casi garantiza problemas evitables.
 
 ### 3.2. Qué puede hacer la IA en esta etapa
@@ -328,7 +997,9 @@ factibilidad:
 
 **Factibilidad económica:**
 - Estimar esfuerzo en función de métricas históricas y complejidad del
-  proyecto (modelos como COCOMO pueden ser asistidos por IA) [9].
+  proyecto. Lopez-Martin et al. [9] demostraron que LLMs fine-tuneados
+  mejoran la precisión de modelos como COCOMO [56], aunque los resultados
+  son inconsistentes entre dominios.
 - Generar análisis comparativos build vs. buy.
 - Proyectar costos de infraestructura a partir de las necesidades
   técnicas descritas.
@@ -337,7 +1008,9 @@ factibilidad:
 - Evaluar el impacto organizacional del proyecto a partir de la
   descripción del contexto.
 - Identificar necesidades de capacitación y cambio organizacional.
-- Generar matrices de riesgo iniciales.
+- Generar matrices de riesgo iniciales — con la advertencia de que el 50%
+  de los outputs de IA para análisis de riesgo requieren corrección
+  experta [13].
 
 ### 3.3. Práctica recomendada: el análisis de factibilidad asistido
 
@@ -398,6 +1071,10 @@ real del cliente o la organización.
 > [!IMPORTANT]
 > *Los requerimientos siguen siendo la etapa donde se ganan o se pierden los proyectos. La IA no cambia esa realidad — pero sí cambia cómo llegamos a ellos.*
 
+*La revisión sistemática (§2.4.2) identificó 9 estudios con evidencia
+moderada. Los LLMs igualan la cobertura humana en historias de usuario pero
+exhiben menor diversidad y creatividad [15].*
+
 ### 4.1. El punto de partida: evidencia empírica
 
 El trabajo de Panigo, Petkoff Bankoff, Pasini y Pesado (2024), presentado en
@@ -439,7 +1116,7 @@ Segunda      │    -    │   AC   │   AC    │   IN    │   SA    │   MA
 - Se solicitó a los modelos la generación de historias de usuario en dos
   formatos: uno simple (solo título con formato *como [rol], quiero
   [acción] para [objetivo]*) y uno completo (con reglas de negocio y
-  criterios de aceptación en sintaxis Gherkin [10]).
+  criterios de aceptación en sintaxis Gherkin [57]).
 - Resultados: todos los modelos generaron historias de usuario pertinentes.
   Los mejores resultados se obtuvieron con el formato simple, y se observó
   que las historias con estructura completa tendían a ser menos atómicas.
@@ -454,7 +1131,7 @@ mirada crítica** sobre los resultados para evaluar su calidad y pertinencia
 
 La elicitación de requerimientos es la etapa donde se recopila información
 detallada de los interesados sobre sus necesidades y expectativas para el
-software [11]. Tradicionalmente, depende de entrevistas, talleres,
+software [58]. Tradicionalmente, depende de entrevistas, talleres,
 observación y análisis de documentos.
 
 La IA puede participar en esta etapa de múltiples maneras:
@@ -482,9 +1159,9 @@ La IA puede participar en esta etapa de múltiples maneras:
 ### 4.3. Análisis y especificación: del lenguaje natural al artefacto formal
 
 Una vez recopilada la información, la etapa de análisis implica clarificar,
-priorizar y estructurar los requerimientos [11]. Las historias de usuario son
+priorizar y estructurar los requerimientos [58]. Las historias de usuario son
 el formato dominante en metodologías ágiles, con aproximadamente el 70% de
-los equipos utilizándolas como herramienta principal de especificación [12].
+los equipos utilizándolas como herramienta principal de especificación [59].
 
 **Práctica recomendada: especificación asistida en tres pasos**
 
@@ -545,6 +1222,10 @@ Paso 3: Refinamiento → IA refina, profesional aprueba
 > [!IMPORTANT]
 > *El diseño es donde la experiencia del ingeniero se vuelve irremplazable. La IA puede proponer una arquitectura, pero solo el profesional sabe si esa arquitectura sobrevivirá al contacto con la realidad del equipo, la organización y el mercado.*
 
+*La revisión sistemática (§2.4.3) identificó 8 estudios con evidencia
+emergente. El diseño arquitectónico con IA es un área relativamente
+subexplorada — el 73% de los modelos usados son decoder-only [18].*
+
 ### 5.1. Arquitectura de software asistida por IA
 
 El diseño arquitectónico es una de las áreas donde la IA ofrece asistencia
@@ -559,8 +1240,9 @@ específicas de cada proyecto.
 - Generar diagramas de componentes y sus interacciones.
 - Evaluar trade-offs entre alternativas arquitectónicas documentadas.
 - Generar ADRs (Architecture Decision Records) a partir de decisiones
-  discutidas.
+  discutidas — Dhar et al. [19] combinan RAG y fine-tuning para esta tarea.
 - Sugerir patrones de diseño apropiados para problemas específicos.
+- Detectar antipatrones y smells arquitectónicos [21][22].
 
 **Lo que la IA no debería decidir sola:**
 - La elección final de la arquitectura.
@@ -618,6 +1300,11 @@ específica del dominio siguen requiriendo diseño humano especializado.
 > [!IMPORTANT]
 > *El código ya no es el artefacto que el desarrollador produce — es el artefacto que el desarrollador supervisa. La habilidad central pasa de "escribir" a "evaluar, corregir y garantizar".*
 
+*La revisión sistemática (§2.4.4) identificó 26 estudios con evidencia
+fuerte. La productividad varía significativamente según expertise y tipo
+de tarea (§2.6), y la calidad del código IA presenta riesgos documentados
+(§2.5).*
+
 ### 6.1. El nuevo modelo de implementación
 
 La implementación es la etapa donde la transformación es más visible. Los
@@ -647,7 +1334,9 @@ prácticas profesionales.
 
 La calidad del código generado por IA depende directamente de la calidad de
 la especificación proporcionada. Un prompt vago produce código vago. Una
-especificación precisa produce código preciso.
+especificación precisa produce código preciso. Osmani formaliza esto con la
+regla del 70/30: dedicar el 70% del esfuerzo a la definición del problema y
+solo el 30% a la ejecución [42].
 
 ```
 ❌ Especificación débil:
@@ -668,8 +1357,10 @@ especificación precisa produce código preciso.
 **Code review como competencia central**
 
 Cuando la IA genera el código, el code review deja de ser un control
-secundario y se convierte en el **principal mecanismo de calidad**. El
-profesional debe ser capaz de:
+secundario y se convierte en el **principal mecanismo de calidad**. Los datos
+de la SLR respaldan esto: el código IA tiene 1.7x más issues [37], el 40%+
+contiene vulnerabilidades de seguridad [38], y el XSS falla el 86% de las
+veces [37]. El profesional debe ser capaz de:
 
 - Leer y comprender código que no escribió.
 - Detectar errores sutiles que los tests pueden no cubrir.
@@ -711,18 +1402,10 @@ implementación es la generación de documentación:
 - Documentación de decisiones técnicas (ADR).
 - Changelogs automatizados.
 
-La documentación es un área donde la IA tiene una ventaja natural: no se
-cansa, no la pospone, y puede generar documentación consistente y completa
-en segundos. La responsabilidad del profesional es **validar la precisión**
-de lo documentado.
-
 ### 6.4. La crisis de calidad del código generado por IA
 
-Los datos sobre calidad del código generado por IA son preocupantes y
-ameritan una subsección propia. Un análisis de CodeRabbit (2025) sobre 470
-pull requests en repositorios open-source encontró que los PRs generados por
-IA contienen **1.7x más issues** que los humanos (10.83 vs. 6.45 por PR)
-[15]. Las vulnerabilidades de seguridad son especialmente alarmantes:
+Los datos de la SLR (§2.5) son contundentes y ameritan atención especial
+en el contexto de implementación:
 
 ```
 Vulnerabilidad                      │ IA vs. Humano
@@ -736,21 +1419,19 @@ XSS: la IA falla el 86% de las veces
 Inyección de logs: código inseguro el 88% de las veces
 ```
 
-El estudio de GitClear (2025), basado en 211 millones de líneas de código
-(2020-2024), revela tendencias estructurales preocupantes: el código
+GitClear [34] revela tendencias estructurales preocupantes: el código
 asociado a refactoring cayó del 25% (2021) a menos del 10% (2024), mientras
-que la duplicación de código creció 8x [16]. El código que necesita ser
+que la duplicación de código creció 8x. El código que necesita ser
 revisado dentro de las 2 semanas siguientes pasó de 3.1% a 7.9%.
 
 **Slopsquatting: un nuevo vector de ataque**
 
-Los LLMs también introdujeron un nuevo riesgo de seguridad sin precedentes:
-el *slopsquatting*. Los modelos alucinan nombres de paquetes que no existen
-pero son plausibles — en promedio, una quinta parte de los paquetes
-recomendados no existe (205.000 nombres alucinados documentados). El 43%
-de estos paquetes fantasma aparecen consistentemente al repetir los mismos
-prompts. Los atacantes pueden pre-registrar estos nombres en repositorios
-públicos para distribuir malware [17].
+Los LLMs también introdujeron un nuevo riesgo de seguridad: el
+*slopsquatting* [41]. Los modelos alucinan nombres de paquetes inexistentes
+— en promedio, una quinta parte de los paquetes recomendados no existe.
+El 43% de estos paquetes fantasma aparecen consistentemente al repetir los
+mismos prompts. Los atacantes pueden pre-registrar estos nombres para
+distribuir malware.
 
 ### 6.5. Riesgos y limitaciones
 
@@ -758,18 +1439,15 @@ públicos para distribuir malware [17].
   soluciones funcionales pero opacas, difíciles de mantener o depurar.
 - **Dependencias innecesarias**: los LLMs tienden a sugerir bibliotecas
   externas donde código simple resolvería el problema.
-- **Vulnerabilidades de seguridad**: el 51.24% de los programas C generados
-  por ChatGPT contienen al menos una vulnerabilidad de seguridad. Más del
-  40% del código generado por IA tiene fallas de seguridad [13].
-- **La "ilusión de productividad"**: generar código rápido no es lo mismo
-  que generar *buen* código rápido. El output individual puede crecer 98%,
-  pero el tiempo de revisión de PRs crece hasta 91% [18].
+- **La "ilusión de productividad"**: el output individual puede crecer
+  98%, pero el tiempo de revisión de PRs crece hasta 91% [42]. Generar
+  código rápido no es lo mismo que generar *buen* código rápido.
 - **Slopsquatting**: los LLMs alucinan nombres de paquetes inexistentes
   que pueden ser explotados como vector de ataque a la cadena de suministro
-  [17].
+  [41].
 
 > [!IMPORTANT]
-> *El 59% de los desarrolladores admite usar código generado por IA que no entiende completamente. Cuando Gartner predice un aumento del 2500% en defectos de software por enfoques "prompt-to-app" para 2028, la ingeniería de software rigurosa no es un lujo — es una necesidad de supervivencia.*
+> *El 59% de los desarrolladores admite usar código generado por IA que no entiende completamente [46]. Cuando Gartner predice un aumento del 2500% en defectos de software por enfoques "prompt-to-app" para 2028 [60], la ingeniería de software rigurosa no es un lujo — es una necesidad de supervivencia.*
 
 ---
 
@@ -777,6 +1455,10 @@ públicos para distribuir malware [17].
 
 > [!IMPORTANT]
 > *En un mundo donde la IA genera código, el testing pasa de ser una actividad complementaria a ser la principal línea de defensa. Testear es la habilidad que no muere — es la que más importa.*
+
+*La revisión sistemática (§2.4.5) identificó 16 estudios con evidencia
+fuerte. GPT-4o alcanza 93.4% de detección de fallas en mutation testing [27],
+y Meta aceptó el 73% de tests generados por LLMs en producción [28].*
 
 ### 7.1. La paradoja del testing con IA
 
@@ -816,16 +1498,12 @@ funciona correctamente.
   las verifiquen con datos aleatorios.
 
 **Mutation testing:**
-- Introducir mutaciones controladas en el código para verificar que los
-  tests las detectan.
-- La IA puede generar mutantes más sofisticados que las herramientas
-  tradicionales.
 - GPT-4o alcanza un **93.4% de tasa de detección de fallas** en mutation
   testing, comparado con 71.7% de LEAM, 51.3% de PIT y 74.4% de Major
-  — las herramientas tradicionales dominantes [19].
+  — las herramientas tradicionales dominantes [27].
 - Meta desplegó testing guiado por mutaciones con LLMs en producción
   (Facebook, Instagram, WhatsApp). Los ingenieros de privacidad aceptaron
-  el **73% de los tests generados** [20].
+  el **73% de los tests generados** [28].
 
 **Testing de seguridad:**
 - Identificación de vulnerabilidades comunes (OWASP Top 10).
@@ -834,7 +1512,7 @@ funciona correctamente.
 
 El crecimiento de la investigación en testing con IA es explosivo: de 1
 paper en 2021 a 73 en 2024, con la generación de tests representando el 60%
-del volumen total de investigación [21].
+del volumen total de investigación [26].
 
 ### 7.3. Práctica recomendada: la pirámide de testing con IA
 
@@ -879,6 +1557,10 @@ que reflejan flujos de negocio requieren supervisión humana cercana.
 > [!IMPORTANT]
 > *La IA no solo puede escribir la aplicación — puede escribir la infraestructura que la sostiene, los pipelines que la despliegan y los monitores que la vigilan. El desafío es que un error en esta etapa afecta producción.*
 
+*La revisión sistemática (§2.4.6) identificó solo 4 estudios con evidencia
+emergente — el despliegue es la fase menos investigada del SDLC. El 73% de
+los equipos DevOps aún no adopta IA en CI/CD [23].*
+
 ### 8.1. Infraestructura como código asistida por IA
 
 La infraestructura como código (IaC) es, paradójicamente, una de las áreas
@@ -914,6 +1596,9 @@ IA en múltiples niveles:
 - **Rollback inteligente**: detección automática de degradación post-
   despliegue y reversión automática.
 
+Joshi [29] documentó que los LLMs pueden reducir tiempos de despliegue en
+un 40%, aunque la brecha entre potencial y adopción real es significativa.
+
 ### 8.3. Monitoreo y observabilidad
 
 Una vez en producción, la IA puede asistir en:
@@ -929,7 +1614,8 @@ Una vez en producción, la IA puede asistir en:
 
 - **Configuraciones inseguras**: la IA puede generar configuraciones que
   funcionan pero exponen servicios innecesariamente o usan permisos
-  excesivos.
+  excesivos. Pereira et al. [30] documentan los desafíos de seguridad
+  específicos de IA en DevSecOps.
 - **Vendor lock-in inadvertido**: los LLMs tienden a generar
   configuraciones específicas del proveedor cloud con el que fueron más
   entrenados.
@@ -944,6 +1630,11 @@ Una vez en producción, la IA puede asistir en:
 
 > [!IMPORTANT]
 > *El 60-80% del costo total de un sistema de software se invierte en mantenimiento. La IA puede transformar la etapa más costosa del SDLC en la más eficiente — si sabemos cómo usarla.*
+
+*La revisión sistemática (§2.4.7) identificó 10 estudios con evidencia
+moderada. GPT-4 detecta el 86.7% de las oportunidades de refactoring pero
+solo genera correcciones válidas el 37% de las veces — cifra que sube al
+98% con pipelines de validación [32].*
 
 ### 9.1. La etapa que consume más recursos
 
@@ -960,13 +1651,12 @@ frentes.
 La deuda técnica — ese conjunto de decisiones subóptimas que se acumulan en
 un sistema y encarecen cada cambio futuro — es uno de los mayores desafíos
 del mantenimiento. El 62% de los desarrolladores la citan como su principal
-frustración, y el 40% de los presupuestos de IT se destina a abordarla
-(Gartner, 2025) [22]. La IA puede asistir en:
+frustración [53]. La IA puede asistir en:
 
 - **Detección**: identificar patrones de código que indican deuda técnica
   (código duplicado, complejidad ciclomática excesiva, acoplamiento,
   falta de tests). GPT-4 detecta el **86.7%** de las oportunidades de
-  refactoring en proyectos reales [23].
+  refactoring en proyectos reales [32].
 - **Cuantificación**: estimar el esfuerzo necesario para remediar la deuda
   identificada.
 - **Priorización**: sugerir qué deuda abordar primero basándose en el
@@ -977,7 +1667,7 @@ frustración, y el 40% de los presupuestos de IT se destina a abordarla
 Un dato crucial: aunque GPT-4 detecta el 86.7% de las oportunidades, solo
 genera refactorizaciones funcionalmente correctas el **37%** de las veces.
 Sin embargo, cuando se agrega un pipeline de validación automatizada, la
-precisión sube al **98%** [23]. La lección es clara: la detección con IA es
+precisión sube al **98%** [32]. La lección es clara: la detección con IA es
 excelente, pero la ejecución sin validación es peligrosa.
 
 **Prompt debt: una nueva forma de deuda técnica**
@@ -986,7 +1676,7 @@ La investigación reciente ha identificado una forma de deuda técnica
 completamente nueva: la *prompt debt* — deuda que surge de prácticas
 deficientes de prompt engineering en proyectos que usan LLMs. Los "prompt
 smells" y "prompt requirement smells" comprometen el rendimiento del modelo
-de formas que no son evidentes hasta mucho después [24].
+de formas que no son evidentes hasta mucho después [33].
 
 ### 9.3. Refactoring asistido
 
@@ -1034,6 +1724,11 @@ modernización de sistemas legacy:
 > [!IMPORTANT]
 > *No desaparece el ingeniero de software — desaparece el ingeniero de software que solo sabe escribir código. El nuevo profesional diseña, evalúa, decide y asume la responsabilidad que la IA no puede asumir.*
 
+*La revisión sistemática (§2.7) documenta la transformación del rol
+profesional. Gartner proyecta que el 80% de la fuerza de trabajo necesitará
+actualizarse para 2027 [43], y el empleo junior cae 9-10% con la adopción
+de IA [45].*
+
 ### 10.1. La transformación del rol
 
 La progresión descrita en las secciones anteriores dibuja un cuadro claro: el
@@ -1054,20 +1749,18 @@ Mantiene y corrige              →  Supervisa remediación automática
 Competencia central: escribir   →  Competencia central: evaluar
 ```
 
-La industria está convergiendo hacia un nombre para este nuevo rol. Andrej
-Karpathy, que en 2025 acuñó el término *vibe coding* para describir la
-aceptación de código generado sin comprenderlo, ya en 2026 lo considera
+Andrej Karpathy, que en 2025 acuñó el término *vibe coding* para describir
+la aceptación de código generado sin comprenderlo, ya en 2026 lo considera
 obsoleto y propone la *ingeniería agéntica*: el profesional no escribe código
 el 99% del tiempo — orquesta agentes que lo hacen, actuando como supervisor
-[25]. Addy Osmani, líder de ingeniería en Google Chrome, formaliza esta
-evolución con la regla del 70/30: dedicar el 70% del esfuerzo a la
-definición del problema (especificaciones, criterios de éxito, tests) y solo
-el 30% a la ejecución [18].
+[44]. Addy Osmani formaliza esta evolución con la regla del 70/30: dedicar
+el 70% del esfuerzo a la definición del problema y solo el 30% a la
+ejecución [42].
 
 ### 10.2. Las nuevas competencias
 
 Gartner proyecta que el **80% de la fuerza de trabajo en ingeniería**
-necesitará actualizarse para 2027 [26]. El profesional del software en la
+necesitará actualizarse para 2027 [43]. El profesional del software en la
 era de la IA necesita un conjunto de competencias que difiere
 significativamente del perfil tradicional:
 
@@ -1109,18 +1802,18 @@ cambian con la IA:
 
 ### 10.4. El impacto en los desarrolladores junior
 
-Un hallazgo particularmente preocupante proviene de un estudio de Harvard
-(2025): cuando las empresas adoptan IA generativa, el empleo de
-desarrolladores junior (0-3 años de experiencia) **cae un 9-10%** en seis
-trimestres, mientras que el empleo senior apenas se modifica [27]. La
-contracción no se debe a que los seniors sean más productivos con IA, sino a
-que las empresas reducen la contratación de perfiles que consideran más
-reemplazables.
+Un hallazgo particularmente preocupante proviene de un estudio de
+Northeastern University (2025): cuando las empresas adoptan IA generativa,
+el empleo de desarrolladores junior (0-3 años de experiencia) **cae un
+9-10%** en seis trimestres, mientras que el empleo senior apenas se modifica
+[45]. La contracción no se debe a que los seniors sean más productivos con
+IA, sino a que las empresas reducen la contratación de perfiles que consideran
+más reemplazables.
 
 Esto genera un problema a mediano plazo: si los juniors no entran al mercado,
 ¿de dónde saldrán los seniors del futuro? La atrofia de habilidades ya es
 medible: el 59% de los desarrolladores admite usar código generado por IA
-que **no comprende completamente** [28]. Los juniors son especialmente
+que **no comprende completamente** [46]. Los juniors son especialmente
 vulnerables porque carecen de los fundamentos para evaluar críticamente el
 output de la IA.
 
@@ -1135,7 +1828,7 @@ output de la IA.
   de fundamentos.
 - **Sesgo de percepción**: un estudio de Microsoft (2025) encontró que
   los ingenieros que usan IA reciben **evaluaciones de competencia más
-  bajas** por trabajo idéntico — efecto que se duplica para mujeres [29].
+  bajas** por trabajo idéntico — efecto que se duplica para mujeres [47].
 
 ---
 
@@ -1147,8 +1840,9 @@ output de la IA.
 ### 11.1. La inversión del paradigma
 
 Este documento ha recorrido cada etapa del ciclo de vida del software para
-mostrar una transformación que ya no es futura sino presente. Los datos son
-inequívocos:
+mostrar una transformación que ya no es futura sino presente. La revisión
+sistemática de la literatura (§2) — basada en 77 estudios de 2022 a 2026 —
+provee la base empírica para las siguientes conclusiones:
 
 ```
 Lo que era                              Lo que es
@@ -1161,11 +1855,11 @@ La calidad se construye              →  La calidad se supervisa y valida
 ────────────────────────────────────────────────────────────
 ```
 
-Esta inversión no es teórica. El 41% del código ya es generado por IA.
-El 85% de los desarrolladores usa herramientas de IA regularmente. Los
+Esta inversión no es teórica. El 41% del código ya es generado por IA [23].
+El 85% de los desarrolladores usa herramientas de IA regularmente [23]. Los
 agentes autónomos resuelven el 72-80% de los problemas en benchmarks
-reales. La transformación ya ocurrió — lo que falta es que las prácticas
-de ingeniería se actualicen para acompañarla.
+reales [5][25]. La transformación ya ocurrió — lo que falta es que las
+prácticas de ingeniería se actualicen para acompañarla.
 
 ### 11.2. Las cinco lecciones que emergen
 
@@ -1174,9 +1868,9 @@ de ingeniería se actualicen para acompañarla.
 En cada etapa — desde la factibilidad hasta el mantenimiento — la calidad
 del output de la IA depende directamente de la calidad del input humano.
 La regla del 70/30 de Osmani lo formaliza: el 70% del esfuerzo debe ir a
-definir el problema, no a ejecutar la solución. Esto no es una limitación
-de la IA — es una característica de la buena ingeniería que siempre estuvo
-ahí, pero que la velocidad de la generación manual ocultaba.
+definir el problema, no a ejecutar la solución [42]. Esto no es una
+limitación de la IA — es una característica de la buena ingeniería que
+siempre estuvo ahí, pero que la velocidad de la generación manual ocultaba.
 
 **2. La supervisión no escala linealmente.**
 
@@ -1184,18 +1878,18 @@ El modelo "humano en el centro" funciona cuando la velocidad de generación
 es moderada. Pero cuando un agente puede producir miles de líneas en
 minutos, la revisión humana se convierte en cuello de botella. Los datos lo
 confirman: el output individual crece 98%, pero el tiempo de revisión de
-PRs crece 91%. La solución no es eliminar la supervisión sino diseñar
+PRs crece 91% [42]. La solución no es eliminar la supervisión sino diseñar
 **prácticas de supervisión que escalen**: testing automatizado, validación
 por pipeline, revisión por niveles de riesgo.
 
 **3. La calidad se degrada si no se defiende activamente.**
 
 Los datos de calidad son una llamada de atención: 1.7x más issues en PRs
-generados por IA, 2.74x más vulnerabilidades XSS, 8x más duplicación de
-código, refactoring en caída libre. Gartner predice un aumento del 2500%
-en defectos para 2028 si se adoptan enfoques "prompt-to-app" sin
-disciplina. La velocidad sin calidad es deuda técnica con interés
-compuesto.
+generados por IA [37], 2.74x más vulnerabilidades XSS [37], 8x más
+duplicación de código [34], refactoring en caída libre [34]. Gartner
+predice un aumento del 2500% en defectos para 2028 si se adoptan enfoques
+"prompt-to-app" sin disciplina [60]. La velocidad sin calidad es deuda
+técnica con interés compuesto.
 
 **4. Cada etapa requiere su propio modelo de integración.**
 
@@ -1223,11 +1917,13 @@ definitiva:
 
 - **¿Cómo formamos juniors?** Si las tareas de entrada son las primeras
   en ser automatizadas, ¿cómo adquieren experiencia los futuros seniors?
+  El empleo junior ya cae 9-10% con la adopción de IA [45].
 - **¿Puede la IA supervisar a la IA?** Cuando el volumen de código
   generado supera la capacidad de revisión humana, ¿es viable un modelo
   de "IA supervisa IA"? ¿O genera un problema recursivo de confianza?
 - **¿Cómo medimos la productividad real?** Si la percepción y la realidad
-  divergen (como mostró el estudio METR), ¿qué métricas usamos?
+  divergen en 43 puntos porcentuales (como mostró el estudio METR [7]),
+  ¿qué métricas usamos?
 - **¿Dónde está el equilibrio?** ¿Cuál es el ratio óptimo de intervención
   humana para cada tipo de tarea?
 
@@ -1255,84 +1951,154 @@ En definitiva, requiere más ingeniería. No menos.
 
 [1] N. Jha y R. Popli. "Artificial Intelligence For Software Testing-Perspectives And Practices". *2021 Fourth International Conference on Computational Intelligence and Communication Technologies (CCICT)*, 2021. DOI: 10.1109/CCICT53244.2021.00075.
 
-[2] A. Panigo, K. Petkoff Bankoff, A. Pasini y P. Pesado. "Inteligencia Artificial en Ingeniería de Software: Etapas de Elicitación y Análisis de requerimientos". *XXX Congreso Argentino de Ciencias de la Computación (CACIC)*, La Plata, 2024.
+[2] A. Panigo, K. Petkoff Bankoff, A. Pasini y P. Pesado. "Inteligencia Artificial en Ingeniería de Software: Etapas de Elicitación y Análisis de requerimientos". *XXX Congreso Argentino de Ciencias de la Computación (CACIC)*, La Plata, 2024. http://sedici.unlp.edu.ar/handle/10915/178398
 
-[3] GitHub. "Octoverse 2024: The state of open source and rise of AI". GitHub Blog, 2024.
+[3] B. Kitchenham y S. Charters. "Guidelines for performing Systematic Literature Reviews in Software Engineering". *EBSE Technical Report*, Keele University, 2007.
 
-[4] JetBrains. "The State of Developer Ecosystem 2025". JetBrains Research, octubre 2025.
+[4] J. Wang et al. "Software Testing with Large Language Models: Survey, Landscape, and Vision". *IEEE Transactions on Software Engineering*, 2024. DOI: 10.1109/TSE.2024.3368208.
 
-[5] C. E. Jimenez et al. "SWE-agent: Agent-Computer Interfaces Enable Automated Software Engineering". *Princeton University*, 2024. arXiv:2405.15793.
+[5] C. E. Jimenez et al. "SWE-bench: Can Language Models Resolve Real-World GitHub Issues?". *ICLR 2024*. arXiv:2310.06770.
 
-[6] Stack Overflow. "2024 Developer Survey". Stack Overflow, 2024.
+[6] S. Peng, E. Kalliamvakou, P. Cihon y M. Demirer. "The Impact of AI on Developer Productivity: Evidence from GitHub Copilot". *Communications of the ACM*, marzo 2024. arXiv:2302.06590.
 
-[7] S. Peng, E. Kalliamvakou, P. Cihon y M. Demirer. "The Impact of AI on Developer Productivity: Evidence from GitHub Copilot". *Communications of the ACM*, marzo 2024. arXiv:2302.06590.
+[7] METR. "Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity". arXiv:2507.09089, julio 2025.
 
-[8] The Standish Group. "CHAOS Report 2020". The Standish Group International, 2020.
+[8] J. Liu et al. "Large Language Model-Based Agents for Software Engineering: A Survey". *ACM Transactions on Software Engineering and Methodology*, 2024. DOI: 10.1145/3712003.
 
-[9] B. W. Boehm et al. *Software Cost Estimation with COCOMO II*. Prentice Hall, 2000.
+[9] C. Lopez-Martin et al. "Leveraging Large Language Models for Predicting Cost and Duration in Software Engineering Projects". arXiv:2409.09617, septiembre 2024.
 
-[10] I. Papadopoulos et al. "Enhancing the student's logical thinking with Gherkin language". *2017 IEEE Global Engineering Education Conference (EDUCON)*, 2017. DOI: 10.1109/EDUCON.2017.7943054.
+[10] L. A. Cabrera-Diego et al. "Large Language Models for Early-Stage Software Project Estimation: A Systematic Mapping Study". *Applied Sciences (MDPI)*, diciembre 2025. https://www.mdpi.com/2076-3417/15/24/13099
 
-[11] E. Whitten y L. Bentley. *Systems Analysis and Design Methods*. 7.ª ed. McGraw-Hill, 2007.
+[11] T.-L. Bui. "An LLM-based multi-agent framework for agile effort estimation". arXiv:2509.14483, septiembre 2025.
 
-[12] F. Dalpiaz y S. Brinkkemper. "Agile Requirements Engineering: From User Stories to Software Architectures". *2021 IEEE 29th International Requirements Engineering Conference (RE)*, 2021.
+[12] M. Hasnain et al. "Effort and Size Estimation in Software Projects with Large Language Model-based Intelligent Interfaces". arXiv:2402.07158, febrero 2024.
 
-[13] H. Pearce et al. "Asleep at the Keyboard? Assessing the Security of GitHub Copilot's Code Contributions". *2022 IEEE Symposium on Security and Privacy (SP)*, 2022.
+[13] "Generative AI in Systems Engineering: A Framework for Risk Assessment of LLMs". arXiv:2602.04358, febrero 2026.
 
-[14] METR. "Measuring the Impact of Early-2025 AI on Experienced Open-Source Developer Productivity". arXiv:2507.09089, julio 2025.
+[14] M. A. Sami et al. "Early Results of an AI Multiagent System for Requirements Elicitation and Analysis". *Product-Focused Software Process Improvement (PROFES 2024)*, Springer LNCS, 2024. DOI: 10.1007/978-3-031-78386-9_20.
 
-[15] CodeRabbit. "State of AI vs Human Code Generation Report". Diciembre 2025.
+[15] R. Gonzalez et al. "Can LLMs Generate User Stories and Assess Their Quality?". arXiv:2507.15157, julio 2025.
 
-[16] GitClear. "AI Copilot Code Quality: 2025 Data Suggests 4x Growth in Code Clones". Febrero 2025.
+[16] W. Zhao et al. "Elicitron: An LLM Agent-Based Simulation Framework for Design Requirements Elicitation". arXiv:2404.16045, abril 2024.
 
-[17] Trend Micro. "Slopsquatting: When AI Agents Hallucinate Malicious Packages". 2025.
+[17] "Research directions for using LLM in software requirement engineering: a systematic review". *Frontiers in Computer Science*, 2025. DOI: 10.3389/fcomp.2025.1519437.
 
-[18] A. Osmani. "The 80% Problem in Agentic Coding". Substack, 2025.
+[18] M. Galster et al. "Artificial Intelligence for Software Architecture: Literature Review and the Road Ahead". arXiv:2504.04334, abril 2025.
 
-[19] R. Tufano et al. "On the Use of Large Language Models in Mutation Testing". arXiv:2406.09843, junio 2024.
+[19] S. Dhar et al. "DRAFT-ing Architectural Design Decisions using LLMs". arXiv:2506.22688, 2025.
 
-[20] Meta Engineering. "Mutation-Guided LLM-based Test Generation at Meta". *FSE 2025 (Industry Papers)*, 2025.
+[20] A. Helmi. "ARLO: A Tailorable Approach for Transforming Natural Language Software Requirements into Architecture using LLMs". 2025.
 
-[21] J. Wang et al. "Software Testing with Large Language Models: Survey, Landscape, and Vision". *IEEE Transactions on Software Engineering*, 2024. DOI: 10.1109/TSE.2024.3368208.
+[21] V. De Luca et al. "LLM-Based Explainability at Design Time: Detecting Elasticity Antipatterns in Software Architectures". Springer, 2025.
 
-[22] Stack Overflow. "2025 Developer Survey". Stack Overflow, 2025.
+[22] D. Taibi et al. "Exploring Architectural Smells Detection Through LLMs". Springer, 2025.
 
-[23] M. Nogueira et al. "ACE: Automated Technical Debt Remediation with Validated Large Language Model Refactorings". arXiv:2507.03536, julio 2025.
+[23] JetBrains. "The State of Developer Ecosystem 2025". JetBrains Research, octubre 2025. https://blog.jetbrains.com/research/2025/10/state-of-developer-ecosystem-2025/
 
-[24] S. Kacimi et al. "PromptDebt: A Comprehensive Study of Technical Debt Across LLM Projects". arXiv:2509.20497, septiembre 2025.
+[24] GitHub. "Octoverse 2024: The state of open source and rise of AI". GitHub Blog, 2024. https://github.blog/news-insights/octoverse/octoverse-2024/
 
-[25] A. Karpathy. "De vibe coding a agentic engineering". 2026. Citado en The Hans India, enero 2026.
+[25] Z. Rasheed et al. "Software Development Life Cycle Perspective: A Survey of Benchmarks for Code LLMs and Agents". arXiv:2505.05283, mayo 2025.
 
-[26] Gartner. "Generative AI Will Require 80% of Engineering Workforce to Upskill Through 2027". Gartner Newsroom, octubre 2024.
+[26] "Systematic Review on LLM-Based Unit Testing". 2025. Analiza 105 papers hasta marzo 2025.
 
-[27] A. Modestino et al. "The Impact of Generative AI on Job Opportunities for Junior Software Engineers". *Northeastern University*, 2025.
+[27] R. Tufano et al. "On the Use of Large Language Models in Mutation Testing". arXiv:2406.09843, junio 2024.
 
-[28] Clutch. "Blind Trust in AI: Most Devs Use AI-Generated Code They Don't Understand". Junio 2025.
+[28] Meta Engineering. "Mutation-Guided LLM-based Test Generation at Meta". *FSE 2025 (Industry Papers)*, 2025.
 
-[29] Microsoft Research. "New Future of Work Report 2025". Diciembre 2025.
+[29] S. Joshi. "A Review of Generative AI and DevOps Pipelines: CI/CD, Agentic Automation, MLOps Integration, and Large Language Models". SSRN, 2025.
 
-[30] C. Fan (Hymel). "The AI-Native Software Development Lifecycle: A Theoretical and Practical New Methodology". arXiv:2408.03416, agosto 2024.
+[30] M. Pereira et al. "Comparative Analysis of AI-Driven Security Approaches in DevSecOps: Challenges, Solutions, and Future Directions". arXiv:2504.19154, abril 2025.
 
-[31] J. Liu et al. "Large Language Model-Based Agents for Software Engineering: A Survey". *ACM Transactions on Software Engineering and Methodology*, 2024.
+[31] R. Goncalves et al. "AI Techniques in the Microservices Life-Cycle: A Systematic Mapping Study". *Computing (Springer)*, 2025.
 
-[32] M. Galster et al. "Artificial Intelligence for Software Architecture: Literature Review and the Road Ahead". arXiv:2504.04334, abril 2025.
+[32] M. Nogueira et al. "ACE: Automated Technical Debt Remediation with Validated Large Language Model Refactorings". arXiv:2507.03536, julio 2025.
 
-[33] C. Lopez-Martin et al. "Leveraging Large Language Models for Predicting Cost and Duration in Software Engineering Projects". arXiv:2409.09617, septiembre 2024.
+[33] S. Kacimi et al. "PromptDebt: A Comprehensive Study of Technical Debt Across LLM Projects". arXiv:2509.20497, septiembre 2025.
 
-[34] M. A. Sami et al. "Early Results of an AI Multiagent System for Requirements Elicitation and Analysis". *Product-Focused Software Process Improvement (PROFES 2024)*, Springer LNCS, 2024.
+[34] GitClear. "AI Copilot Code Quality: 2025 Data Suggests 4x Growth in Code Clones". Febrero 2025. https://www.gitclear.com/ai_assistant_code_quality_2025_research
 
-[35] J. Garcia et al. "AI-Driven Decision Support Systems in Agile Software Project Management: Enhancing Risk Mitigation and Resource Allocation". *MDPI Systems*, 2025.
+[35] J. Garcia et al. "AI-Driven Decision Support Systems in Agile Software Project Management: Enhancing Risk Mitigation and Resource Allocation". *MDPI Systems*, 2025. https://www.mdpi.com/2079-8954/13/3/208
 
-[36] S. Joshi. "A Review of Generative AI and DevOps Pipelines: CI/CD, Agentic Automation, MLOps Integration, and Large Language Models". SSRN, 2025.
+[36] E. Psaltis et al. "Cognitive Agents Powered by Large Language Models for Agile Software Project Management". *MDPI Electronics*, enero 2025.
 
-[37] Qodo. "State of AI Code Quality in 2025". Qodo Research, 2025.
+[37] CodeRabbit. "State of AI vs Human Code Generation Report". Diciembre 2025. https://www.coderabbit.ai/blog/state-of-ai-vs-human-code-generation-report
 
-[38] Apiiro Research. "4x Velocity, 10x Vulnerabilities: AI Coding Assistants Are Shipping More Risks". 2025.
+[38] H. Pearce et al. "Asleep at the Keyboard? Assessing the Security of GitHub Copilot's Code Contributions". *2022 IEEE Symposium on Security and Privacy (SP)*, 2022.
 
-[39] Gartner. "Strategic Predictions for IT Organizations 2026 and Beyond". Gartner Newsroom, 2025.
+[39] Apiiro Research. "4x Velocity, 10x Vulnerabilities: AI Coding Assistants Are Shipping More Risks". 2025. https://apiiro.com/blog/4x-velocity-10x-vulnerabilities-ai-coding-assistants-are-shipping-more-risks/
 
-[40] GitHub. "Spec-driven development with AI: Get started with a new open source toolkit". GitHub Blog, 2025.
+[40] Qodo. "State of AI Code Quality in 2025". Qodo Research, 2025. https://www.qodo.ai/reports/state-of-ai-code-quality/
 
-[41] Forrester. "Predictions 2026: AI Moves from Hype to Hard Hat Work". Forrester Blog, 2025.
+[41] Trend Micro. "Slopsquatting: When AI Agents Hallucinate Malicious Packages". 2025. https://www.trendmicro.com/vinfo/us/security/news/cybercrime-and-digital-threats/slopsquatting-when-ai-agents-hallucinate-malicious-packages
 
-[42] A. Osmani. "Agentic Engineering". AddyOsmani.com, 2025-2026.
+[42] A. Osmani. "The 80% Problem in Agentic Coding". Substack, 2025. https://addyo.substack.com/p/the-80-problem-in-agentic-coding
+
+[43] Gartner. "Generative AI Will Require 80% of Engineering Workforce to Upskill Through 2027". Gartner Newsroom, octubre 2024. https://www.gartner.com/en/newsroom/press-releases/2024-10-03-gartner-says-generative-ai-will-require-80-percent-of-engineering-workforce-to-upskill-through-2027
+
+[44] A. Karpathy. "De vibe coding a agentic engineering". 2026. Citado en The Hans India, enero 2026. https://www.thehansindia.com/technology/tech-news/karpathy-says-vibe-coding-is-fading-as-agentic-engineering-becomes-the-new-ai-coding-era-1045758
+
+[45] A. Modestino et al. "The Impact of Generative AI on Job Opportunities for Junior Software Engineers". *Northeastern University*, 2025.
+
+[46] Clutch. "Blind Trust in AI: Most Devs Use AI-Generated Code They Don't Understand". Junio 2025. https://clutch.co/resources/devs-use-ai-generated-code-they-dont-understand
+
+[47] Microsoft Research. "New Future of Work Report 2025". Diciembre 2025. https://www.microsoft.com/en-us/research/publication/new-future-of-work-report-2025/
+
+[48] C. Fan (Hymel). "The AI-Native Software Development Lifecycle: A Theoretical and Practical New Methodology". arXiv:2408.03416, agosto 2024.
+
+[49] GitHub. "Spec-driven development with AI: Get started with a new open source toolkit". GitHub Blog, 2025. https://github.blog/ai-and-ml/generative-ai/spec-driven-development-with-ai-get-started-with-a-new-open-source-toolkit/
+
+[50] AI-DLC 2026. "AI-Driven Development Lifecycle". Han Research, 2026. https://han.guru/papers/ai-dlc-2026/
+
+[51] Microsoft. "An AI-led SDLC: Building an End-to-End Agentic Software Development Lifecycle". Microsoft Tech Community, 2025. https://techcommunity.microsoft.com/blog/appsonazureblog/an-ai-led-sdlc-building-an-end-to-end-agentic-software-development-lifecycle-wit/4491896
+
+[52] S. Willison. "Context Engineering". SimonWillison.net, junio 2025. https://simonwillison.net/2025/jun/27/context-engineering/
+
+[53] Stack Overflow. "2025 Developer Survey". Stack Overflow, 2025. https://survey.stackoverflow.co/2025
+
+[54] Entrepreneur. "AI Is Already Writing About 30% of Code at Microsoft and Google". 2025. https://www.entrepreneur.com/business-news/ai-is-taking-over-coding-at-microsoft-google-and-meta/490896
+
+[55] The Standish Group. "CHAOS Report 2020". The Standish Group International, 2020.
+
+[56] B. W. Boehm et al. *Software Cost Estimation with COCOMO II*. Prentice Hall, 2000.
+
+[57] I. Papadopoulos et al. "Enhancing the student's logical thinking with Gherkin language". *2017 IEEE Global Engineering Education Conference (EDUCON)*, 2017. DOI: 10.1109/EDUCON.2017.7943054.
+
+[58] E. Whitten y L. Bentley. *Systems Analysis and Design Methods*. 7.ª ed. McGraw-Hill, 2007.
+
+[59] F. Dalpiaz y S. Brinkkemper. "Agile Requirements Engineering: From User Stories to Software Architectures". *2021 IEEE 29th International Requirements Engineering Conference (RE)*, 2021.
+
+[60] Gartner. "Strategic Predictions for IT Organizations 2026 and Beyond". Gartner Newsroom, 2025. https://www.gartner.com/en/articles/strategic-predictions-for-2026
+
+[61] Forrester. "Predictions 2026: AI Moves from Hype to Hard Hat Work". Forrester Blog, 2025. https://www.forrester.com/blogs/predictions-2026-ai-moves-from-hype-to-hard-hat-work/
+
+[62] A. Osmani. "Agentic Engineering". AddyOsmani.com, 2025-2026. https://addyosmani.com/blog/agentic-engineering/
+
+[63] N. Nascimento et al. "LLMs' Reshaping of People, Processes, Products, and Society in Software Development: A Comprehensive Exploration with Early Adopters". arXiv:2503.05012, marzo 2025.
+
+[64] GitHub. "Octoverse 2025: The state of open source". 2025. https://octoverse.github.com/
+
+[65] Stack Overflow. "2024 Developer Survey". Stack Overflow, 2024. https://survey.stackoverflow.co/2024/ai
+
+[66] JetBrains. "The State of Developer Ecosystem 2024". JetBrains Research, diciembre 2024.
+
+[67] Gartner. "Top Predictions for IT Organizations 2025 and Beyond". Octubre 2024. https://www.gartner.com/en/newsroom/press-releases/2024-10-22-gartner-unveils-top-predictions-for-it-organizations-and-users-in-2025-and-beyond
+
+[68] IT Revolution. "The Revenge of QA: How AI Code Generation Is Exposing Decades of Process Debt". 2025. https://itrevolution.com/articles/the-revenge-of-qa-how-ai-code-generation-is-exposing-decades-of-process-debt/
+
+[69] C. Jaspan et al. (Google). "Developer Productivity With and Without GitHub Copilot: A Longitudinal Study". arXiv:2509.20353, septiembre 2025.
+
+[70] E. Barr et al. "Large Language Models for Software Testing: A Research Roadmap". arXiv:2509.25043, septiembre 2025.
+
+[71] D. Russo. "From Today's Code to Tomorrow's Symphony: The AI Transformation of Developer's Routine by 2030". arXiv:2405.12731, mayo 2024.
+
+[72] A. Guerrero et al. "Software engineering education in the era of conversational AI: current trends and future directions". *Frontiers in Artificial Intelligence*, 2024. DOI: 10.3389/frai.2024.1436350.
+
+[73] "A systematic literature review on the impact of AI models on the security of code generation". *Frontiers in Big Data*, 2024. DOI: 10.3389/fdata.2024.1386720.
+
+[74] Y. Wang et al. "LLMs: A game-changer for software engineers?". *Journal of Computer Languages (ScienceDirect)*, 2025.
+
+[75] "Using LLMs to Enhance Code Quality: A Systematic Literature Review". *ScienceDirect*, 2025.
+
+[76] K. Macklon et al. "LLMorpheus: Mutation Testing Using Large Language Models". *IEEE TSE*, 2025.
+
+[77] A. M. Dakhel et al. "Effective Test Generation Using Pre-trained Large Language Models and Mutation Testing". *Information and Software Technology*, 2024.
